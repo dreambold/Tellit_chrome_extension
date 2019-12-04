@@ -301,6 +301,7 @@ function send_request(current_url, newcomment, username, ref_id) {
 var share_link = '';
 
 var comment_count = 0;
+
 function read_comment(current_url, sortby, ref_id) {
 	// Sending and receiving data in JSON format using POST method
 	var xhr = new XMLHttpRequest();
