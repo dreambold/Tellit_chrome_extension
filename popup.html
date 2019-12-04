@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Best Comment</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+    integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <!-- Begin emoji-picker Stylesheets -->
+  <link href="lib/css/emoji.css" rel="stylesheet">
+  <style>
+    /* comment Structure */
+
+    html,
+    body {
+
+      resize: both;
+      font-family: "Open Sans", sans-serif;
+      font-size: 12px;
+      margin: 0;
+      /* max-height: 500px; */
+      width: 400px;
+      overflow: auto;
+    }
+
+    h1 {
+      font-family: "Menlo", monospace;
+      font-size: 16px;
+      font-weight: 400;
+      margin: 0;
+    }
+
+    a:link,
+    a:visited {
+      color: #000000;
+      outline: 0;
+      text-decoration: none;
+    }
+
+    img.logo-icon {
+      width: 51px;
+    }
+
+    .comment-header {
+      align-items: center;
+      height: 45px;
+      ;
+    }
+
+    .comment-content {
+      /* margin-top: 20px; */
+      /* box-shadow: 3px 3px 3px grey; */
+
+    }
+
+    .comment-icons {
+      margin-top: 2rem;
+      padding: 0 22px;
+    }
+
+    .logo {
+      padding-left: 16px;
+      padding-top: 13px;
+      float: left;
+    }
+
+    .version {
+      font-size: 14px;
+    }
+
+    #post {
+      margin-top: 10px;
+      height: 25px;
+      width: 34%;
+      border-radius: 20%;
+      float: left;
+      border-style: solid;
+      border-width: 1px;
+      border-color: black;
+      background-color: white;
+    }
+
+    #comment_history {
+      padding: 1rem;
+      height: 160px;
+      min-height: 100px;
+      max-height: 290px;
+      width: 100%;
+      /* border: 1px solid #ccc; */
+      font: 16px/26px Georgia,
+        Garamond,
+        Serif;
+      overflow: auto;
+    }
+
+    #newcomment {
+      border-style: solid;
+      border-width: 1px;
+      padding: 5px;
+      overflow: scroll;
+      width: 97%;
+    }
+
+    #username {
+      border-style: solid;
+      border-width: 1px;
+      padding: 5px;
+      overflow: scroll;
+      width: 97%;
+    }
+
+    #col1,
+    #col2,
+    #col3 {
+      float: left;
+      height: 25px;
+      width: 25px;
+      margin-top: 10px;
+    }
+
+    #speaker {
+      height: 20px;
+      width: 20px;
+      margin-top: 10px;
+    }
+
+    #col2,
+    #col3 {
+      margin-left: 5px;
+    }
+
+    #tellit {
+      margin-top: 10px;
+      width: 35%;
+      float: left;
+    }
+
+    #show_text {
+      float: left;
+      margin-left: 60%;
+      cursor: pointer;
+    }
+
+    #show_text_top {
+      float: right;
+      cursor: pointer;
+    }
+
+    #img {
+      float: right;
+      margin-right: 10px;
+      width: 14px;
+      margin-top: 3px;
+    }
+
+    #img_top {
+      float: right;
+      margin-right: 10px;
+      width: 14px;
+      margin-top: 3px;
+    }
+
+    .comment_history {
+      border-bottom-style: solid;
+      padding-top: 20px;
+      /* padding-bottom: 20px; */
+      border-bottom-width: 1px;
+      overflow: hidden;
+      word-wrap: break-word;
+    }
+
+    #source_img {
+      width: 100%;
+      display: none;
+      position: absolute;
+      padding: 0px 5% 0px 6%;
+      width: 96%;
+      z-index: 900;
+      margin-top: 20px;
+
+    }
+
+    .vote_div {
+      /* float: right; */
+      margin-top: 5px;
+    }
+
+    .upvote {
+      cursor: pointer;
+      height: 20px;
+      width: 20px;
+    }
+
+    .downvote {
+      cursor: pointer;
+      height: 20px;
+      width: 20px;
+    }
+
+    .counter {
+      /* padding: 3px; */
+      margin-top: 25px;
+      position: absolute;
+      /* padding: 0 5px; */
+      margin-left: -10px;
+      width: 20px;
+      height: 18px;
+      text-align: center;
+      /* background-color: blue; */
+      border-radius: 3px;
+      color: white;
+      background-color: #8080ff;
+      font-size: 12px;
+      /* background: url(./images/num_back.png); */
+      /* background-size: cover; */
+      /* background-repeat: no-repeat; */
+      /* background: url(/images/arrow.png) no-repeat 0 50%; */
+
+    }
+
+    .vote_div a {
+      cursor: pointer;
+    }
+
+    /* ======================== */
+    .tellit {
+      margin-left: 120px;
+      float: left;
+      margin-top: 15px;
+      font-size: 30px;
+      position: absolute;
+
+    }
+
+    #first_comment {
+      text-align: center;
+    }
+
+    .grippie {
+      background: url(./images/grippie.png) no-repeat center 2px #686869;
+      border: 1px solid #ccc;
+      border-top-width: 0;
+      cursor: s-resize;
+      height: 9px;
+      overflow: hidden;
+      width: 100%;
+      margin-top: 65px;
+    }
+
+    .fa-warning {
+      margin-top: 2px;
+      margin-left: -13px;
+      position: absolute;
+      color: yellow;
+      -webkit-text-stroke-width: 0.5px;
+      -webkit-text-stroke-color: black;
+    }
+
+    /* width */
+    ::-webkit-scrollbar {
+      width: 9px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px grey;
+      border-radius: 5px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: grey;
+      border-radius: 5px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: grey;
+    }
+
+
+
+    div {
+      -webkit-transition: all 0.1s ease-in-out;
+      -moz-transition: all 0.1s ease-in-out;
+      -o-transition: all 0.1s ease-in-out;
+      transition: all 0.1s ease-in-out;
+    }
+
+    #tips {
+      position: absolute;
+      backface-visibility: hidden;
+      box-shadow: 3px 3px 3px grey;
+      z-index: 900;
+      top: 70px;
+      left: 5%;
+      width: 90%;
+      padding: 10px;
+      border: 1px solid grey;
+      -webkit-transition: all 0.1s ease-in-out;
+      -moz-transition: all 0.1s ease-in-out;
+      -o-transition: all 0.1s ease-in-out;
+      transition: all 0.1s ease-in-out;
+    }
+
+    .sort {
+      position: absolute;
+      margin-top: 20px;
+      margin-left: 10px;
+    }
+
+    .sort input {
+      width: 65px;
+    }
+
+    .dropbtn {
+      font-size: 14px;
+      cursor: pointer;
+      width: 100px;
+      line-height: 16px;
+      border: none;
+    }
+
+    .dropdown {
+      padding-top: 5px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      box-shadow: 3px 3px 3px grey;
+      z-index: 1;
+    }
+
+    .dropdown-content button {
+
+      text-decoration: none;
+      display: block;
+      width: 100px;
+      border: 1px solid grey;
+    }
+
+    .dropdown-content button:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+
+    .navbar {
+      float: right;
+      /* overflow: hidden; */
+    }
+
+    .dropdown_share {
+      float: right;
+      overflow: hidden;
+    }
+
+    .dropdown_share .dropbtn_share {
+      padding: 5px;
+      font-size: 15px;
+      border: none;
+      outline: none;
+      color: white;
+      background-color: inherit;
+      font-family: inherit;
+      margin: 0;
+    }
+
+    .navbar a:hover,
+    .dropdown_share:hover .dropbtn_share {
+      background-color: red;
+    }
+
+    .dropdown-content_share {
+      display: none;
+      position: relative;
+
+
+    }
+
+    .dropdown-content_share a {
+      margin-top: -10px;
+      float: left;
+      padding: 2px;
+      padding-bottom: 0px;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .dropdown_share:hover .dropdown-content_share {
+      display: inline-block;
+    }
+
+
+    .show {
+      display: block;
+    }
+
+    /* For Slieder Switch */
+    .switch {
+      position: relative;
+      width: 30px;
+      height: 17px;
+      float: left;
+      left: -30px;
+      top: 40px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 13px;
+      width: 13px;
+      left: 2px;
+      top: 2px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    input:checked+.slider {
+      background-color: #2196F3;
+    }
+
+    input:focus+.slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:hover+.slider ::before {
+      content: "????";
+    }
+
+    input:checked+.slider:before {
+      -webkit-transform: translateX(13px);
+      -ms-transform: translateX(13px);
+      transform: translateX(13px);
+    }
+
+    /* For Slieder Switch */
+    .switch_top {
+      position: relative;
+      width: 30px;
+      height: 17px;
+      float: left;
+      left: 50px;
+      top: 25px;
+    }
+
+    .switch_top input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 13px;
+      width: 13px;
+      left: 2px;
+      top: 2px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    input:checked+.slider {
+      background-color: #2196F3;
+    }
+
+    input:focus+.slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:hover+.slider ::before {
+      content: "Switch on/off";
+    }
+
+    input:checked+.slider:before {
+      -webkit-transform: translateX(13px);
+      -ms-transform: translateX(13px);
+      transform: translateX(13px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 17px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+
+    /*  */
+    .switch .tooltiptext,
+    .switch_top .tooltiptext {
+      visibility: hidden;
+      width: 90px;
+      background-color: lightgrey;
+      color: #000;
+      text-align: center;
+      border-radius: 3px;
+      padding: 5px 0;
+      top: -30px;
+      left: 30px;
+
+      /* Position the tooltip */
+      position: absolute;
+      z-index: 1;
+    }
+
+    .switch:hover .tooltiptext,
+    .switch_top:hover .tooltiptext {
+      visibility: visible;
+      box-shadow: 2px 2px 2px grey;
+    }
+
+    .view-replies {
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* ============= */
+
+    .submit_reply {
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="mask">
+    <div class="comment-header">
+      <div class="logo">
+        <img class="logo-icon" src="images/t_icon.png" />
+        <i class="fa fa-warning fa-2x"></i>
+        <span class="counter"></span>
+
+      </div>
+      <h1 class="tellit"><img class='tellit_img' src="images/tellit.png" style="width: 67%;"></h1>
+      <a id="tips_handle" title="Tips and Tricks"><i class="fa fa-lightbulb-o"
+          style="font-size:48px;color:red; float: right; margin-top: 10px; margin-right: 10px; cursor: pointer;"></i></a>
+    </div>
+    <div id="tips" style="display: none; background-color:rgba(255, 255, 255, 1);">
+      1. use "Alt + 1" to open or close the extension<br>
+      2. We have a website(link), an app(link to website with android and iphone version link), and a desktop
+      programme(link to download page on website) too.<br>
+      3. Post comments with enter key. To make an empty line you have to use space until you reach the end of a line
+      and
+      press forward arrow key to jump to the next line. Shift plus or ctrl<br>
+    </div>
+    <div class="sort">
+      <!-- <input type="button" value="Upvote" id="by_upvote">
+      <input type="button" value="Recent" id="by_recent">
+      <input type="button" value="Comment" id="by_comment"> -->
+      <div class="dropdown">
+        <button id="sort_by" class="dropbtn"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i> Sort
+          By...</button>
+        <div id="dropdown" class="dropdown-content">
+          <button id="by_upvote">Upvote</button>
+          <button id="by_recent">Recent</button>
+          <button id="by_comment">Comment</button>
+        </div>
+      </div>
+    </div>
+    <label class="switch_top">
+      <input type="checkbox" checked>
+      <span class="slider round"></span>
+      <span class="tooltiptext">Stay open ON/OFF</span>
+    </label>
+    <div class="show_ad_top" style="margin-top: 25px;">
+
+      <span id="show_text_top">SHOW ADVERTISMENT</span>
+      <img id="img_top" src="images/ad_icon.png" />
+
+    </div>
+    <div>
+      <a href="about:blank" target="_blank"><img id="source_img_top" src="images/untitled.png"
+          style="display:none; z-index: 1001;position: absolute;margin-top: 30px;" /></a>
+    </div>
+    <br>
+    <div class="header_divider" style="width: 100%; height: 1px; display: block; margin-top: 10px;"></div>
+    <div class="comment-content" id="comment-content">
+      <div id="comment_history">
+
+      </div>
+    </div>
+    <div class="show_ad" style="padding-top: 10px;">
+      <span id="show_text">SHOW ADVERTISMENT</span>
+      <!-- <span id="hide_text" style="color:blue;display: none;">HIDE ADVERTISMENT</span> -->
+      <img id="img" src="images/ad_icon.png" />
+
+    </div>
+    <div>
+      <a href="about:blank" target="_blank"><img id="source_img" src="images/untitled.png" height=50 /></a>
+    </div>
+    <div class="comment-icons">
+      <!-- <input type="text" id="newcomment" name="newcomment" data-emojiable="true" placeholder="Enter Your Comment Here!"> -->
+      <p class="lead emoji-picker-container" style="margin-bottom: 5px;">
+        <input id="newcomment" type="text" placeholder="Your comment!" data-emojiable="true" autocomplete="off">
+      </p>
+      <!-- <input type="email" class="form-control" placeholder="Input your comment!" data-emojiable="true"> -->
+      <input type="text" id="username" name="username" placeholder="Name!" autocomplete="off"
+        style="background-color:white;border-color:black; font-size: 14px !important; padding: 0; padding-left: 5px; height: 30px;">
+
+      <!-- <input class = "post" type = "submit" value = "Comment" name = "submit"> -->
+      <input id="col1" type="button" style="background-image:url('images/col1.png');background-repeat: no-repeat;
+  background-size: cover;" />
+      <div>
+        <input id="col2" type="button" style="background-image:url('images/col21.png');background-repeat: no-repeat;
+  background-size: cover;" />
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider round"></span>
+          <span class="tooltiptext">Tooltip text</span>
+        </label>
+      </div>
+      <input id="col3" type="button" style="background-image:url('images/col3.png');background-repeat: no-repeat;
+  background-size: cover;     margin-left: -27px;" />
+
+      <img class='tellit_img' id="tellit" src="images/tellit.png" />
+      <!-- <input id="speaker" type="button" style="background-image:url('images/speaker.png');background-repeat: no-repeat;
+  background-size: cover;" /> -->
+
+
+      <input id="post" type="button" value="Post Comment" class="post" />
+    </div>
+
+    <div class="xhr_result_box"></div>
+
+    <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="jQuery_ui.js"></script>
+    <script type="text/javascript" src="popup.js"></script>
+    <!-- Begin emoji-picker JavaScript -->
+    <script src="lib/js/config.js"></script>
+    <script src="lib/js/util.js"></script>
+    <script src="lib/js/jquery.emojiarea.js"></script>
+    <script src="lib/js/emoji-picker.js"></script>
+
+    <div class="grippie"></div>
+  </div>
+</body>
+
+</html>
