@@ -279,13 +279,13 @@ function send_request(current_url, newcomment, username, ref_id) {
 		"<i class='downvote_num'>" + 0 + "</i>" +
 		"<i style='color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username + "</i>" +
 		share_link + "</div></div>";
-
-	if (!ref_id)
+	// add comments
+	if g(!ref_id) {
 		$('#comment_history').append(str1);
-
+	}
 	// Check if Troll mode
 	if (document.body.style.backgroundImage == "url('images/troll_back.png')") { }
-	// CONTROL SCROLL
+	// CONTROL SCROLL to the bottom position
 	var element = document.getElementById('comment_history');
 	element.scrollTop = element.scrollHeight - element.clientHeight;
 
