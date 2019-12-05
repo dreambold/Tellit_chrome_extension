@@ -280,7 +280,7 @@ function send_request(current_url, newcomment, username, ref_id) {
 		"<i style='color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username + "</i>" +
 		share_link + "</div></div>";
 	// add comments
-	if g(!ref_id) {
+	if (!ref_id) {
 		$('#comment_history').append(str1);
 	}
 	// Check if Troll mode
