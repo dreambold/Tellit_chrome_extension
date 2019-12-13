@@ -5,7 +5,66 @@ chrome.contextMenus.create({
   contexts: ["all"]
 });
 
+// chrome.browserAction.setBadgeBackgroundColor({ color: [0, 0, 255, 25] });
+// chrome.browserAction.setBadgeText({ text: '12' });
 //Taking Action while cliking any of the Menu Items
+
+// chrome.runtime.onMessage.addListener(
+//   function (request, sender, sendResponse) {
+//     chrome.browserAction.setIcon({
+//       path: request.newIconPath,
+//       tabId: sender.tab.id
+//     });
+//   });
+
+// chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+//   alert('updated from background');
+// });
+chrome.tabs.onActivated.addListener(function (activeInfo) {
+  // how to fetch tab url using activeInfo.tabid
+  chrome.tabs.get(activeInfo.tabId, function (tab) {
+    console.log(tab.url);
+    // read_comment(tab.url, 'recent');
+  });
+
+});
+
+// function read_comment(current_url, sortby, ref_id) {
+//   // Sending and receiving data in JSON format using POST method
+//   var xhr = new XMLHttpRequest();
+//   var url = base_url + "read_comment.php";
+//   if (ref_id) ref_id = ref_id.replace('i', '');
+//   var data = {
+//     url: current_url,
+//     sortby: sortby,
+//     ref_id: ref_id
+//   };
+
+//   xhr.onreadystatechange = function () {
+//     if (xhr.readyState === 4 && xhr.status === 200) {
+//       var res = this.responseText;
+
+//       if (JSON.parse(res)['nodata'] != "false") {
+//         count = 0;
+//       }
+
+
+//       if (count == 0) {
+//         chrome.browserAction.setBadgeBackgroundColor({ color: [255, 255, 0, 255] });
+//         chrome.browserAction.setBadgeText({ text: count.toString() });
+//       } else {
+//         chrome.browserAction.setBadgeBackgroundColor({ color: [0, 0, 255, 255] });
+//         chrome.browserAction.setBadgeText({ text: count.toString() });
+//       }
+//     }
+//   }
+//   //============================event when click upvote============================
+
+//   xhr.open("POST", url, true);
+//   xhr.send(JSON.stringify(data));
+// }
+
+
 //=================================================
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
 

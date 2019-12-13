@@ -19,6 +19,16 @@ try {
 		}
 	}, 500);
 }
+
+// ========================================================================
+chrome.tabs.query({
+	active: true,
+	currentWindow: true
+}, function (tabs) {
+	tab = (tabs.length === 0 ? tabs : tabs[0]);
+	activeTabUrl = tab.url;
+	read_comment(activeTabUrl, sortby);
+});
 //=========================================================================
 var sortby;
 var tab;
@@ -27,6 +37,15 @@ var show_reply = true;
 
 //=======================Domcontent Loaded============================
 document.addEventListener('DOMContentLoaded', function () {
+	// // load ads
+	chrome.tabs.query({
+		active: true,
+		currentWindow: true
+	}, function (tabs) {
+		tab = (tabs.length === 0 ? tabs : tabs[0]);
+		get_ads(tab.url);
+	});
+
 
 	//========================Paste from Context menu copy========
 	chrome.storage.sync.get(['key'], function (result) {
@@ -209,6 +228,35 @@ try {
 }
 
 //========================================================================
+//=========================GET AD FROM SERVER========================================
+function get_ads(current_url) {
+	// Sending and receiving data in JSON format using POST method
+	var xhr = new XMLHttpRequest();
+
+	// xhr.responseType = 'json';
+	var link = base_url + "serve_ad.php?url=" + current_url;
+	var data = {
+		url: current_url
+	};
+
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState === 4 && xhr.status === 200) {
+			var res = JSON.parse(this.response);
+			console.log(res);
+			if (res.found == 'true') {
+				document.querySelectorAll('.ad-link')[0].href = res.link;
+				// document.querySelectorAll('.ad-link')[1].href = res.link;
+				document.querySelectorAll('#source_img_top')[0].src = base_url + res.img;
+				// document.querySelectorAll('#ad-img')[1].src = base_url + res.img;
+			}
+
+		}
+	};
+
+	xhr.open("POST", link, true);
+	xhr.send();
+}
+
 //==========================after clicked post==============================
 function clicked(e) {
 	chrome.tabs.query({
@@ -239,16 +287,16 @@ function send_request(current_url, newcomment, username, ref_id) {
 	var xhr = new XMLHttpRequest();
 	var url = base_url + "add_comment.php";
 	newcomment = newcomment.replace(/\"/g, '\\"');
-	var bgImg;
-	if (document.body.style.backgroundImage == "url('images/troll_back.png')") {
-		bgImg = "url('images/troll_back.png')";
-	}
+	var troll;
+	// check if this is a comment in trollmode
+	if (document.body.style.cssText.includes('images/troll_back.png')) troll = 1;
+	else troll = 0;
 	var data = {
 		url: current_url,
 		comment: newcomment,
 		username: username,
 		ref_id: ref_id,
-		bg_img: bgImg
+		troll: troll
 	};
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState === 4 && xhr.status === 200) {
@@ -268,7 +316,7 @@ function send_request(current_url, newcomment, username, ref_id) {
 		var newcommen2 = newcomment.substr(0, 25);
 		str1 += "<span class='readmore_bold'>" + newcommen2 + "</span>" +
 			"<span class='readless_bold' style='display:none;'>" + newcomment + "</span>" + "...&nbsp;&nbsp;" +
-			"<span style='color: blue; border:solid blue 1px; cursor: pointer;' class='read_more input_more'>Read More </span>";
+			"<span style='color: blue; border:solid blue 1px; cursor: pointer;' class='read_more input_more'>ReadMore </span>";
 	} else {
 		str1 += "<span>" + newcomment + "</span>";
 	}
@@ -329,6 +377,7 @@ function read_comment(current_url, sortby, ref_id) {
 					var downvote = JSON.parse(res)['downvote'];
 					var tree = JSON.parse(res)['tree'];
 					var child = JSON.parse(res)['child'];
+					var troll = JSON.parse(res)['troll'];
 
 					if (typeof child !== 'undefined') console.log(child);
 
@@ -336,6 +385,7 @@ function read_comment(current_url, sortby, ref_id) {
 					(count != 0) ? $('.fa-warning').css("display", "none") : $('.fa-warning').css("display", "block");
 
 					for (var i = 0; i < count; i++) {
+
 						share_link = '<div class="navbar">' +
 							'<div class="dropdown_share">' +
 							'<i class="fa fa-share" style="font-size:13px"></i>' +
@@ -358,20 +408,24 @@ function read_comment(current_url, sortby, ref_id) {
 							'</div>' +
 							'</div>' +
 							'</div>';
-						var ii = tree[i].id;
+
+						troll_bg = ''; var ii = tree[i].id;
+
+						troll[ii] == 1 ? troll_bg = 'style = "background-image: url(\'images/troll.png\');background-size: cover;"' : troll_bg = "";
+						console.log(troll[ii])
 						tree[i].children != null ? viewReplies = "ViewReplies" : viewReplies = "";
 
 						if (upvote[ii] > 0) {
 							if (comment[ii].length > 25) {
 								var commen1 = comment[ii].substr(0, 25);
 
-								str += "<div class='comment_history' id='i" + id[ii] + "'>" +
+								str += "<div class='comment_history' id='i" + id[ii] + "'" + troll_bg + ">" +
 									"<i style='color:#d9534f;'>" + "&nbsp" + username[ii] + "</i><br/>" +
 									"<b class='readmore_bold'>" + commen1 + "</b>" +
 									"<b class='readless_bold' style='display:none;'>" + comment[ii] + "</b>...&nbsp;&nbsp;" +
-									"<span style='border:solid 1px; cursor: pointer;' class='read_more'>Read More </span>";
+									"<span style='border:solid 1px; cursor: pointer;' class='read_more'>ReadMore </span>";
 							} else {
-								str += "<div class='comment_history' id='i" + id[ii] + "'>" +
+								str += "<div class='comment_history' id='i" + id[ii] + "'" + troll_bg + ">" +
 									"<i style = 'color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username[ii] + "</i><br/>" +
 									"<b>" + comment[ii] + "</b>";
 							}
@@ -379,13 +433,13 @@ function read_comment(current_url, sortby, ref_id) {
 						else if (upvote[ii] == 0) {
 							if (comment[ii].length > 25) {
 								var commen2 = comment[ii].substr(0, 25);
-								str += "<div class='comment_history' id='i" + id[ii] + "'>" +
+								str += "<div class='comment_history' id='i" + id[ii] + "'" + troll_bg + ">" +
 									" <i style='color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username[ii] + "</i><br/>" +
 									"<span class='readmore_bold'>" + commen2 + "</span><span class='readless_bold' style='display:none;'>" + comment[ii] + "</span>" +
 									"...&nbsp;&nbsp;" +
-									"<span style='border:solid 1px; cursor: pointer;' class='read_more'>Read More </span>";
+									"<span style='border:solid 1px; cursor: pointer;' class='read_more'>ReadMore </span>";
 							} else {
-								str += "<div class='comment_history' id='i" + id[ii] + "'>" +
+								str += "<div class='comment_history' id='i" + id[ii] + "'" + troll_bg + ">" +
 									" <i style = 'color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username[ii] + "</i><br/>" +
 									"<span>" + comment[ii] + "</span>";
 							}
@@ -423,7 +477,7 @@ function read_comment(current_url, sortby, ref_id) {
 
 					// var count = tree.length;
 					// (count != 0) ? $('.fa-warning').css("display", "none") : $('.fa-warning').css("display", "block");
-					console.log(Object.keys(username));
+					// console.log(Object.keys(username));
 					var len = Object.keys(username).length;
 					for (var j = 0; j < len; j++) {
 						ii = Object.keys(comment)[j];
@@ -435,13 +489,13 @@ function read_comment(current_url, sortby, ref_id) {
 								commen1 = comment[ii].substr(0, 25);
 
 								str += "<div class='' id='i" + id[ii] + "'>" +
-									"<i style='color:#d9534f;'>" + "&nbsp" + username[ii] + "</i> ::  " +
+									"<i style='color:#d9534f;'>" + "&nbsp" + username[ii] + "</i> <br/>" +
 									"<b class='readmore_bold'>" + commen1 + "</b>" +
 									"<b class='readless_bold' style='display:none;'>" + comment[ii] + "</b>...&nbsp;&nbsp;" +
-									"<span style='border:solid 1px; cursor: pointer;' class='read_more'>Read More </span>";
+									"<span style='border:solid 1px; cursor: pointer;' class='read_more'>ReadMore </span>";
 							} else {
 								str += "<div class='' id='i" + id[ii] + "'>" +
-									"<i style = 'color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username[ii] + "</i> ::  " +
+									"<i style = 'color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username[ii] + "</i><br/>" +
 									"<b>" + comment[ii] + "</b>";
 							}
 						}
@@ -449,13 +503,13 @@ function read_comment(current_url, sortby, ref_id) {
 							if (comment[ii].length > 25) {
 								var commen2 = comment[ii].substr(0, 25);
 								str += "<div class='' id='i" + id[ii] + "'>" +
-									" <i style='color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username[ii] + "</i> ::  " +
+									" <i style='color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username[ii] + "</i><br/>" +
 									"<span class='readmore_bold'>" + commen2 + "</span><span class='readless_bold' style='display:none;'>" + comment[ii] + "</span>" +
 									"...&nbsp;&nbsp;" +
-									"<span style='border:solid 1px; cursor: pointer;' class='read_more'>Read More </span>";
+									"<span style='border:solid 1px; cursor: pointer;' class='read_more'>ReadMore </span>";
 							} else {
 								str += "<div class='' id='i" + id[ii] + "'>" +
-									" <i style = 'color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username[ii] + "</i> ::  " +
+									" <i style = 'color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username[ii] + "</i><br/>" +
 									"<span>" + comment[ii] + "</span>";
 							}
 						}
@@ -488,6 +542,13 @@ function read_comment(current_url, sortby, ref_id) {
 			//==========================append counter number==================================
 			$(".counter").empty();
 			$(".counter").append(count);
+			if (count == 0) {
+				chrome.browserAction.setBadgeBackgroundColor({ color: [255, 255, 0, 255] });
+				chrome.browserAction.setBadgeText({ text: count.toString() });
+			} else {
+				chrome.browserAction.setBadgeBackgroundColor({ color: [0, 0, 255, 255] });
+				chrome.browserAction.setBadgeText({ text: count.toString() });
+			}
 			//============================event when click upvote============================
 			$('.upvote').click(function (event) {
 				click_vote(event, 'true');
@@ -549,6 +610,8 @@ function read_comment(current_url, sortby, ref_id) {
 	xhr.open("POST", url, true);
 	xhr.send(JSON.stringify(data));
 }
+
+
 //==============================Get Replies============================
 function getReplies(ref_id) {
 	read_comment(activeTabUrl, '', ref_id);
@@ -660,11 +723,11 @@ function set_color(e) {
 var readMoreFlag = true;
 function readMore(event) {
 	if (readMoreFlag) {
-		event.target.innerHTML = "Read Less";
+		event.target.innerHTML = "ReadLess";
 		event.target.parentNode.children[1].style.display = 'inline';
 		event.target.parentNode.children[0].style.display = 'none';
 	} else {
-		event.target.innerHTML = "Read More";
+		event.target.innerHTML = "ReadMore";
 		event.target.parentNode.children[1].style.display = 'none';
 		event.target.parentNode.children[0].style.display = 'inline';
 	}

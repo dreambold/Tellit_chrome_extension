@@ -1,0 +1,550 @@
+/* comment Structure */
+
+html,
+body {
+
+    resize: both;
+    font-family: "Open Sans", sans-serif;
+    font-size: 12px;
+    margin: 0;
+    /* max-height: 500px; */
+    width: 400px;
+    overflow: auto;
+}
+
+h1 {
+    font-family: "Menlo", monospace;
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0;
+}
+
+a:link,
+a:visited {
+    color: #000000;
+    outline: 0;
+    text-decoration: none;
+}
+
+img.logo-icon {
+    width: 51px;
+}
+
+.comment-header {
+    align-items: center;
+    height: 45px;
+    ;
+}
+
+.comment-content {
+    /* margin-top: 20px; */
+    /* box-shadow: 3px 3px 3px grey; */
+
+}
+
+.comment-icons {
+    margin-top: 2rem;
+    padding: 0 22px;
+}
+
+.logo {
+    padding-left: 16px;
+    padding-top: 13px;
+    float: left;
+}
+
+.version {
+    font-size: 14px;
+}
+
+#post {
+    margin-top: 10px;
+    height: 25px;
+    width: 34%;
+    border-radius: 20%;
+    float: left;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    background-color: white;
+}
+
+#comment_history {
+    padding: 1rem;
+    height: 160px;
+    min-height: 100px;
+    max-height: 290px;
+    width: 100%;
+    /* border: 1px solid #ccc; */
+    font: 16px/26px Georgia,
+        Garamond,
+        Serif;
+    overflow: auto;
+}
+
+#newcomment {
+    border-style: solid;
+    border-width: 1px;
+    padding: 5px;
+    overflow: scroll;
+    width: 97%;
+}
+
+#username {
+    border-style: solid;
+    border-width: 1px;
+    padding: 5px;
+    overflow: scroll;
+    width: 97%;
+}
+
+#col1,
+#col2,
+#col3 {
+    float: left;
+    height: 25px;
+    width: 25px;
+    margin-top: 10px;
+}
+
+#speaker {
+    height: 20px;
+    width: 20px;
+    margin-top: 10px;
+}
+
+#col2,
+#col3 {
+    margin-left: 5px;
+}
+
+#tellit {
+    margin-top: 10px;
+    width: 35%;
+    float: left;
+}
+
+#show_text {
+    float: left;
+    margin-left: 60%;
+    cursor: pointer;
+}
+
+#show_text_top {
+    float: left;
+    margin-left: 60%;
+    cursor: pointer;
+}
+
+#img {
+    float: right;
+    margin-right: 10px;
+    width: 14px;
+    margin-top: 3px;
+}
+
+#img_top {
+    float: right;
+    margin-right: 10px;
+    width: 14px;
+    margin-top: 3px;
+}
+
+.comment_history {
+    border-bottom-style: solid;
+    padding-top: 20px;
+    /* padding-bottom: 20px; */
+    border-bottom-width: 1px;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+#source_img {
+    width: 100%;
+    display: none;
+    position: absolute;
+    padding: 0px 5% 0px 6%;
+    width: 96%;
+    z-index: 900;
+    margin-top: 20px;
+
+}
+
+.vote_div {
+    /* float: right; */
+    margin-top: 5px;
+}
+
+.upvote {
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+}
+
+.downvote {
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+}
+
+.counter {
+    /* padding: 3px; */
+    margin-top: 25px;
+    position: absolute;
+    /* padding: 0 5px; */
+    margin-left: -10px;
+    width: 20px;
+    height: 18px;
+    text-align: center;
+    /* background-color: blue; */
+    border-radius: 3px;
+    color: white;
+    background-color: #8080ff;
+    font-size: 12px;
+    /* background: url(./images/num_back.png); */
+    /* background-size: cover; */
+    /* background-repeat: no-repeat; */
+    /* background: url(/images/arrow.png) no-repeat 0 50%; */
+
+}
+
+.vote_div a {
+    cursor: pointer;
+}
+
+/* ======================== */
+.tellit {
+    margin-left: 120px;
+    float: left;
+    margin-top: 15px;
+    font-size: 30px;
+    position: absolute;
+
+}
+
+#first_comment {
+    text-align: center;
+}
+
+.grippie {
+    background: url(./images/grippie.png) no-repeat center 2px #686869;
+    border: 1px solid #ccc;
+    border-top-width: 0;
+    cursor: s-resize;
+    height: 9px;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 65px;
+}
+
+.fa-warning {
+    margin-top: 2px;
+    margin-left: -13px;
+    position: absolute;
+    color: yellow;
+    -webkit-text-stroke-width: 0.5px;
+    -webkit-text-stroke-color: black;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 9px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: grey;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: grey;
+}
+
+
+
+div {
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -o-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+
+#tips {
+    position: absolute;
+    backface-visibility: hidden;
+    box-shadow: 3px 3px 3px grey;
+    z-index: 900;
+    top: 70px;
+    left: 5%;
+    width: 90%;
+    padding: 10px;
+    border: 1px solid grey;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -o-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+
+.sort {
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 10px;
+}
+
+.sort input {
+    width: 65px;
+}
+
+.dropbtn {
+    font-size: 14px;
+    cursor: pointer;
+    width: 100px;
+    line-height: 16px;
+    border: none;
+}
+
+.dropdown {
+    padding-top: 5px;
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    box-shadow: 3px 3px 3px grey;
+    z-index: 1;
+}
+
+.dropdown-content button {
+
+    text-decoration: none;
+    display: block;
+    width: 100px;
+    border: 1px solid grey;
+}
+
+.dropdown-content button:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+.navbar {
+    float: right;
+    /* overflow: hidden; */
+}
+
+.dropdown_share {
+    float: right;
+    overflow: hidden;
+}
+
+.dropdown_share .dropbtn_share {
+    padding: 5px;
+    font-size: 15px;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+}
+
+.navbar a:hover,
+.dropdown_share:hover .dropbtn_share {
+    background-color: red;
+}
+
+.dropdown-content_share {
+    display: none;
+    position: relative;
+
+
+}
+
+.dropdown-content_share a {
+    margin-top: -10px;
+    float: left;
+    padding: 2px;
+    padding-bottom: 0px;
+    text-decoration: none;
+    text-align: center;
+}
+
+/* .dropdown_share:hover .dropdown-content_share {
+      display: inline-block;
+    } */
+
+
+.show {
+    display: block;
+}
+
+/* For Slieder Switch */
+.switch {
+    position: relative;
+    width: 30px;
+    height: 17px;
+    float: left;
+    left: -30px;
+    top: 40px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    top: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #2196F3;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:hover+.slider ::before {
+    content: "????";
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(13px);
+    -ms-transform: translateX(13px);
+    transform: translateX(13px);
+}
+
+/* For Slieder Switch */
+.switch_top {
+    position: relative;
+    width: 30px;
+    height: 17px;
+    float: left;
+    left: 50px;
+    top: 25px;
+}
+
+.switch_top input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    top: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #2196F3;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:hover+.slider ::before {
+    content: "Switch on/off";
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(13px);
+    -ms-transform: translateX(13px);
+    transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 17px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/*  */
+.switch .tooltiptext,
+.switch_top .tooltiptext {
+    visibility: hidden;
+    width: 90px;
+    background-color: lightgrey;
+    color: #000;
+    text-align: center;
+    border-radius: 3px;
+    padding: 5px 0;
+    top: -30px;
+    left: 30px;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.switch:hover .tooltiptext,
+.switch_top:hover .tooltiptext {
+    visibility: visible;
+    box-shadow: 2px 2px 2px grey;
+}
+
+.view-replies {
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* ============= */
+
+.submit_reply {
+    cursor: pointer;
+}

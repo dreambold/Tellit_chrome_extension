@@ -12,6 +12,10 @@
     ],
     "persistent": false
   },
+  "content_scripts": [{
+    "matches": ["http://*/*", "https://*/*"],
+    "js": ["contentscript.js"]
+  }],
   "browser_action": {
     "default_icon": "t_icon.png",
     "default_popup": "popup.html"
