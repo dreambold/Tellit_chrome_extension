@@ -26,6 +26,10 @@ a:visited {
     text-decoration: none;
 }
 
+a:hover {
+    font-weight: bold;
+}
+
 img.logo-icon {
     width: 51px;
 }
@@ -152,7 +156,7 @@ img.logo-icon {
 
 .comment_history {
     border-bottom-style: solid;
-    padding-top: 20px;
+    /* padding-top: 20px; */
     /* padding-bottom: 20px; */
     border-bottom-width: 1px;
     overflow: hidden;
@@ -341,6 +345,11 @@ div {
 .navbar {
     float: right;
     /* overflow: hidden; */
+}
+
+.navbar:hover {
+    cursor: pointer;
+
 }
 
 .dropdown_share {
@@ -548,3 +557,18 @@ input:checked+.slider:before {
 .submit_reply {
     cursor: pointer;
 }
+
+
+.read_more,
+.read_less {
+    color: blue;
+    border-radius: 3px;
+}
+
+/* 
+
+
+
+
+
+*/

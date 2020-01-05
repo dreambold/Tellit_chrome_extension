@@ -242,7 +242,7 @@ function get_ads(current_url) {
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState === 4 && xhr.status === 200) {
 			var res = JSON.parse(this.response);
-			console.log(res);
+			// console.log(res);
 			if (res.found == 'true') {
 				document.querySelectorAll('.ad-link')[0].href = res.link;
 				// document.querySelectorAll('.ad-link')[1].href = res.link;
@@ -315,7 +315,7 @@ function send_request(current_url, newcomment, username, ref_id) {
 	if (newcomment.length > 25) {
 		var newcommen2 = newcomment.substr(0, 25);
 		str1 += "<span class='readmore_bold'>" + newcommen2 + "</span>" +
-			"<span class='readless_bold' style='display:none;'>" + newcomment + "</span>" + "...&nbsp;&nbsp;" +
+			"<span class='readless_bold' style='display:none;'>" + newcomment + "</span>" + "" +
 			"<span style='color: blue; border:solid blue 1px; cursor: pointer;' class='read_more input_more'>ReadMore </span>";
 	} else {
 		str1 += "<span>" + newcomment + "</span>";
@@ -363,7 +363,7 @@ function read_comment(current_url, sortby, ref_id) {
 
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState === 4 && xhr.status === 200) {
-			console.log(JSON.parse(this.responseText));
+			// console.log(JSON.parse(this.responseText));
 			var res = this.responseText;
 			var str = '';
 
@@ -411,21 +411,22 @@ function read_comment(current_url, sortby, ref_id) {
 
 						troll_bg = ''; var ii = tree[i].id;
 
-						troll[ii] == 1 ? troll_bg = 'style = "background-image: url(\'images/troll.png\');background-size: cover;"' : troll_bg = "";
+						troll[ii] == 1 ? troll_bg = 'style = "background-image: url(\'images/troll.png\');background-size: cover; color: white;"' : troll_bg = "";
 						console.log(troll[ii])
-						tree[i].children != null ? viewReplies = "ViewReplies" : viewReplies = "";
+						tree[i].children != null ? viewReplies = "ViewReplies(" + tree[i].children.length + ")" : viewReplies = "";
 
 						if (upvote[ii] > 0) {
 							if (comment[ii].length > 25) {
 								var commen1 = comment[ii].substr(0, 25);
 
-								str += "<div class='comment_history' id='i" + id[ii] + "'" + troll_bg + ">" +
+								str += "<div class='comment_history' id='ii" + id[ii] + "'" + troll_bg + ">" +
 									"<i style='color:#d9534f;'>" + "&nbsp" + username[ii] + "</i><br/>" +
 									"<b class='readmore_bold'>" + commen1 + "</b>" +
-									"<b class='readless_bold' style='display:none;'>" + comment[ii] + "</b>...&nbsp;&nbsp;" +
+									"<b class='readless_bold' style='display:none;'>" + comment[ii] + "</b>" +
 									"<span style='border:solid 1px; cursor: pointer;' class='read_more'>ReadMore </span>";
+
 							} else {
-								str += "<div class='comment_history' id='i" + id[ii] + "'" + troll_bg + ">" +
+								str += "<div class='comment_history' id='ii" + id[ii] + "'" + troll_bg + ">" +
 									"<i style = 'color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username[ii] + "</i><br/>" +
 									"<b>" + comment[ii] + "</b>";
 							}
@@ -433,13 +434,13 @@ function read_comment(current_url, sortby, ref_id) {
 						else if (upvote[ii] == 0) {
 							if (comment[ii].length > 25) {
 								var commen2 = comment[ii].substr(0, 25);
-								str += "<div class='comment_history' id='i" + id[ii] + "'" + troll_bg + ">" +
+								str += "<div class='comment_history' id='ii" + id[ii] + "'" + troll_bg + ">" +
 									" <i style='color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username[ii] + "</i><br/>" +
 									"<span class='readmore_bold'>" + commen2 + "</span><span class='readless_bold' style='display:none;'>" + comment[ii] + "</span>" +
-									"...&nbsp;&nbsp;" +
+									"" +
 									"<span style='border:solid 1px; cursor: pointer;' class='read_more'>ReadMore </span>";
 							} else {
-								str += "<div class='comment_history' id='i" + id[ii] + "'" + troll_bg + ">" +
+								str += "<div class='comment_history' id='ii" + id[ii] + "'" + troll_bg + ">" +
 									" <i style = 'color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username[ii] + "</i><br/>" +
 									"<span>" + comment[ii] + "</span>";
 							}
@@ -457,13 +458,13 @@ function read_comment(current_url, sortby, ref_id) {
 				}
 				else {
 					count = 0;
-					str = "<h2 id='first_comment'>" + "Be the first comment!" + "</h2>";
+					str = "<h2 id='first_comment'><b>" + "Be the first comment!" + "</b></h2>";
 				}
 
 				$('#comment_history').append(str);
 			}
 			else {
-				str = '<div style="padding-left: 20px">';
+				str = '<div style="padding-left: 20px; ">';
 				if (JSON.parse(res)['nodata'] == "false") {
 					comment = JSON.parse(res)['comment'];
 					username = JSON.parse(res)['username'];
@@ -488,13 +489,14 @@ function read_comment(current_url, sortby, ref_id) {
 							if (comment[ii].length > 25) {
 								commen1 = comment[ii].substr(0, 25);
 
-								str += "<div class='' id='i" + id[ii] + "'>" +
+								str += "<div class='' style='border-top: black 1px solid;' id='i" + id[ii] + "'>" +
 									"<i style='color:#d9534f;'>" + "&nbsp" + username[ii] + "</i> <br/>" +
 									"<b class='readmore_bold'>" + commen1 + "</b>" +
-									"<b class='readless_bold' style='display:none;'>" + comment[ii] + "</b>...&nbsp;&nbsp;" +
+									"<b class='readless_bold' style='display:none;'>" + comment[ii] + "</b>" +
 									"<span style='border:solid 1px; cursor: pointer;' class='read_more'>ReadMore </span>";
+
 							} else {
-								str += "<div class='' id='i" + id[ii] + "'>" +
+								str += "<div class='' style='border-top: black 1px solid;' id='i" + id[ii] + "'>" +
 									"<i style = 'color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username[ii] + "</i><br/>" +
 									"<b>" + comment[ii] + "</b>";
 							}
@@ -502,13 +504,13 @@ function read_comment(current_url, sortby, ref_id) {
 						else if (upvote[ii] == 0) {
 							if (comment[ii].length > 25) {
 								var commen2 = comment[ii].substr(0, 25);
-								str += "<div class='' id='i" + id[ii] + "'>" +
+								str += "<div class='' style='border-top: black 1px solid;' id='i" + id[ii] + "'>" +
 									" <i style='color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username[ii] + "</i><br/>" +
 									"<span class='readmore_bold'>" + commen2 + "</span><span class='readless_bold' style='display:none;'>" + comment[ii] + "</span>" +
-									"...&nbsp;&nbsp;" +
+									"" +
 									"<span style='border:solid 1px; cursor: pointer;' class='read_more'>ReadMore </span>";
 							} else {
-								str += "<div class='' id='i" + id[ii] + "'>" +
+								str += "<div class='' style='border-top: black 1px solid;' id='i" + id[ii] + "'>" +
 									" <i style = 'color:#d9534f;'>" + "&nbsp&nbsp&nbsp" + username[ii] + "</i><br/>" +
 									"<span>" + comment[ii] + "</span>";
 							}
@@ -534,7 +536,18 @@ function read_comment(current_url, sortby, ref_id) {
 
 			// ========================ADD VIEW REPLIES FUNCTION=====================
 			$('.view-replies').click(function () {
-				getReplies($(this).attr('id'));
+				var id = '#' + $(this).attr('id');
+				console.log(id);
+				if (!$(id).hasClass('open')) {
+					$(id).addClass('open');
+					console.log('open');
+					getReplies($(id).attr('id'));
+				} else {
+					$(id).removeClass('open');
+					console.log('close');
+					$(id).next('div').remove();
+				}
+
 			});
 			//==========================ADD EVENTS TO NEW ELEMENTS=========================
 			var element = document.getElementById('comment_history');
@@ -576,7 +589,7 @@ function read_comment(current_url, sortby, ref_id) {
 
 				// show_reply = !show_reply;
 				$('.submit_reply').click(function () {
-					var ref_id = $(this).parent().parent().attr('id').replace('i', '');
+					var ref_id = $(this).parent().parent().attr('id').replace('ii', '');
 					console.log(ref_id)
 
 					chrome.tabs.query({
@@ -724,12 +737,14 @@ var readMoreFlag = true;
 function readMore(event) {
 	if (readMoreFlag) {
 		event.target.innerHTML = "ReadLess";
-		event.target.parentNode.children[1].style.display = 'inline';
-		event.target.parentNode.children[0].style.display = 'none';
+		console.log(event.target.parentNode.children);
+		console.log(event.target);
+		event.target.parentNode.children[3].style.display = 'inline';
+		event.target.parentNode.children[2].style.display = 'none';
 	} else {
 		event.target.innerHTML = "ReadMore";
-		event.target.parentNode.children[1].style.display = 'none';
-		event.target.parentNode.children[0].style.display = 'inline';
+		event.target.parentNode.children[3].style.display = 'none';
+		event.target.parentNode.children[2].style.display = 'inline';
 	}
 	readMoreFlag = !readMoreFlag;
 }
